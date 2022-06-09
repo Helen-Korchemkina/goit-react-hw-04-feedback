@@ -1,0 +1,21 @@
+.buttons {
+  display: flex;
+  align-items: center;
+}
+
+.buttons li {
+  margin-right: 15px;
+}
+
+.buttons button {
+  border-color: inherit;
+  padding: 5px 10px;
+  color: aliceblue;
+  border-radius: 5px;
+  cursor: pointer;
+transition: box-shadow 250ms linear, transform 250ms linear;
+}
+.buttons button:hover {
+box-shadow: 2px 5px 2px 0 rgb(0 0 0 / 0.5);
+color: black;}
+
