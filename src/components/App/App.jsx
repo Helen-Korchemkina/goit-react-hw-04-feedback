@@ -1,24 +1,22 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Statistics from '../Statistics/Statistics';
 import FeedbackOptions from '../FeedbackOptions/FeedbackOptions';
 import Section from '../Section/Section';
 import Notification from '../Notification/Notification';
 import s from './App.module.css';
 
-class App extends Component {
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+const App = () => {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+  const countTotalFeedback = () => {
+    return good + neutral + bad;
   };
 
-  countTotalFeedback = () => {
-    return Object.values(this.state).reduce((acc, value) => acc + value, 0);
-  };
+  const total = countTotalFeedback();
 
-  countPositiveFeedbackPercentage = () => {
-    const { good } = this.state;
-    const total = this.countTotalFeedback();
+  const countPositiveFeedbackPercentage = () => {
     let positiveFeedbackPercentage = 0;
 
     total !== 0 &&
@@ -28,29 +26,34 @@ class App extends Component {
     return positiveFeedbackPercentage;
   };
 
-  onLeaveFeedback = event => {
-    const { name } = event.target;
-    this.setState(prevState => {
-      return { [name]: prevState[name] + 1 };
-    });
+  const percentage = countPositiveFeedbackPercentage();
+  
+  const onLeaveFeedback = event => {  
+    switch (event.target.name) {
+      case 'good': setGood(prevGood => prevGood + 1);
+        break;
+      
+      case 'neutral': setNeutral(prevNeutal => prevNeutal + 1);
+        break;
+      
+      case 'bad': setBad(prevBad => prevBad + 1);
+        break;
+      
+      default: return;
+    }
   };
 
-  render() {
-    const { good, neutral, bad } = this.state;
-    const total = this.countTotalFeedback();
-    const percentage = this.countPositiveFeedbackPercentage();
-    const feedback = this.onLeaveFeedback;
-    const options = Object.keys(this.state);
+  const options = ['good', 'neutral', 'bad'];
 
     return (
       <div className={s.Feedback__leave}>
         <Section title="Please leave feedback">
           <FeedbackOptions
             options={options}
-            onLeaveFeedback={feedback}
+            onLeaveFeedback={onLeaveFeedback}
           />
         </Section>
-        {total && (
+        {total > 0 && (
           <div>
             <Section title="Statistics">
               <Statistics
@@ -63,14 +66,13 @@ class App extends Component {
             </Section>
           </div>
         )}
-        {!total && (
+        {total === 0 && (
           <div>
             <Notification message="There is no feedback!"/>
           </div>
         )}
       </div>
     );
-  }
 }
 
 export default App;
