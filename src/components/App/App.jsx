@@ -27,52 +27,53 @@ const App = () => {
   };
 
   const percentage = countPositiveFeedbackPercentage();
-  
-  const onLeaveFeedback = event => {  
+
+  const onLeaveFeedback = event => {
     switch (event.target.name) {
-      case 'good': setGood(prevGood => prevGood + 1);
+      case 'good':
+        setGood(prevGood => prevGood + 1);
         break;
-      
-      case 'neutral': setNeutral(prevNeutal => prevNeutal + 1);
+
+      case 'neutral':
+        setNeutral(prevNeutal => prevNeutal + 1);
         break;
-      
-      case 'bad': setBad(prevBad => prevBad + 1);
+
+      case 'bad':
+        setBad(prevBad => prevBad + 1);
         break;
-      
-      default: return;
+
+      default:
+        return;
     }
   };
 
   const options = ['good', 'neutral', 'bad'];
 
-    return (
-      <div className={s.Feedback__leave}>
-        <Section title="Please leave feedback">
-          <FeedbackOptions
-            options={options}
-            onLeaveFeedback={onLeaveFeedback}
-          />
-        </Section>
-        {total > 0 && (
-          <div>
-            <Section title="Statistics">
-              <Statistics
-                good={good}
-                neutral={neutral}
-                bad={bad}
-                total={total}
-                positivePercentage={percentage}
-              />
-            </Section>
-          </div>
-        )}
-        {total === 0 && (
-          <div>
-            <Notification message="There is no feedback!"/>
-          </div>
-        )}
-      </div>
-    );
-}
+  return (
+    <div className={s.Feedback__leave}>
+      <Section title="Please leave feedback">
+        <FeedbackOptions options={options} onLeaveFeedback={onLeaveFeedback} />
+      </Section>
+      {total > 0 && (
+        <div>
+          <Section title="Statistics">
+            <Statistics
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              total={total}
+              positivePercentage={percentage}
+            />
+          </Section>
+        </div>
+      )}
+      {total === 0 && (
+        <div>
+          <Notification message="There is no feedback!" />
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default App;
